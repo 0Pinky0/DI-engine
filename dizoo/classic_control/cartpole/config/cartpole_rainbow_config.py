@@ -1,7 +1,7 @@
 from easydict import EasyDict
 
 cartpole_rainbow_config = dict(
-    env_id =0,
+    env_id=0,
     exp_name='cartpole_rainbow_seed0',
     env=dict(
         collector_env_num=1,
@@ -12,7 +12,7 @@ cartpole_rainbow_config = dict(
     policy=dict(
         cuda=True,
         priority=True,
-        algorithm = 'rainbow',
+        algorithm='rainbow',
         discount_factor=0.97,
         nstep=1,
         model=dict(
@@ -21,23 +21,23 @@ cartpole_rainbow_config = dict(
             encoder_hidden_size_list=[128, 128, 64],
         ),
         learn=dict(
-            update_per_collect=3,
-            batch_size=64,
-            learning_rate=0.001,
-            target_update_freq=100,
+            update_per_collect=10,
+            batch_size=128,
+            learning_rate=0.0001,
+            target_update_freq=20,
         ),
         collect=dict(
-            n_sample=800*5,
+            n_sample=3072,
             unroll_len=1,
         ),
-        eval=dict(evaluator=dict(eval_freq=10, )),
+        eval=dict(evaluator=dict(eval_freq=5, )),
         other=dict(
             eps=dict(
                 type='exp',
                 start=0.95,
                 end=0.1,
                 decay=10000,
-            ), replay_buffer=dict(replay_buffer_size=20000, )
+            ), replay_buffer=dict(replay_buffer_size=200000, )
         ),
     ),
 )
@@ -57,4 +57,5 @@ create_config = cartpole_rainbow_create_config
 if __name__ == "__main__":
     # or you can enter `ding -m serial -c cartpole_rainbow_config.py -s 0`
     from ding.entry import serial_pipeline
+
     serial_pipeline((main_config, create_config), seed=0)

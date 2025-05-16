@@ -167,9 +167,11 @@ def rolloutor(
                 for i in range(k):
                     
                     if int(transition['action'][i]) != -1:
+                        ops_tran_new = {}
                         tensor_action = transition['action'][i]
                         tensor_action = tensor_action.unsqueeze(-1)
                         tensor_done = transition['done']
+                        tensor_obs = {}
                         if 'next_obs' in transition:
                             tensor_next_obs = {}
                             tensor_next_obs['action_mask'] = transition['next_obs']['action_mask'][i]
@@ -178,25 +180,25 @@ def rolloutor(
                             except IndexError:
                                 print(len(transition['next_obs']['agent_state']))
                             ops_transition.next_obs = ttorch.as_tensor(tensor_next_obs)
+                            ops_tran_new['next_obs'] = ttorch.as_tensor(tensor_next_obs)
                         if 'logit' in transition:
                             ops_transition['logit'] = transition['logit'][i]
+                            ops_tran_new['logit'] = ttorch.as_tensor(transition['logit'][i])
                         if 'adv' in transition:
                             ops_transition['adv'] = transition['adv'][i]
-                        tensor_obs = {}
+                        if 'value' in transition:
+                            value = transition['value'][i]
+                            ops_tran_new['value'] = ttorch.as_tensor(value)
                         tensor_obs['action_mask'] = transition['obs']['action_mask'][i]
                         tensor_obs['agent_state'] = transition['obs']['agent_state'][i]
                         tensor_reward = transition['reward'][i]
-                        value = transition['value'][i]
-                        ops_tran_new = {}
                         ops_tran_new['logit'] = ttorch.as_tensor(transition['logit'][i])
                         ops_tran_new['action'] = ttorch.as_tensor(tensor_action)
                         ops_tran_new['reward'] = ttorch.as_tensor(tensor_reward)
                         ops_tran_new['done'] = ttorch.as_tensor(tensor_done)
-                        ops_tran_new['next_obs'] = ttorch.as_tensor(tensor_next_obs)
                         ops_tran_new['obs'] = ttorch.as_tensor(tensor_obs)
                         ops_tran_new['collect_train_iter'] = ttorch.as_tensor([ctx.train_iter])
                         ops_tran_new['env_data_id'] = ttorch.as_tensor([env_episode_id[timestep.env_id]])
-                        ops_tran_new['value'] = ttorch.as_tensor(value)
                         ops_tran_new = ttorch.as_tensor(ops_tran_new)
                         transitions.append(timestep.env_id, ops_tran_new)
                         # ops_transition.action = tensor_action

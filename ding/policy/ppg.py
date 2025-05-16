@@ -1248,7 +1248,7 @@ class PPGOffPolicy(Policy):
         weights = []
         for memory in aux_memories:
             # for memory in memories:
-            states.append(memory['obs'])
+            states.append(memory['obs']['agent_state'])
             actions.append(memory['action'])
             return_.append(memory['return_'])
             old_values.append(memory['value'])
@@ -1290,7 +1290,7 @@ class PPGOffPolicy(Policy):
                 )
                 ppg_joint_loss = ppg_joint_error(data_ppg, self._clip_ratio)
                 wb = self._aux_bc_weight
-                total_loss = ppg_joint_loss.auxiliary_loss + wb * ppg_joint_loss.behavioral_cloning_loss
+                total_loss = ppg_joint_loss.auxiliary_loss
 
                 # # policy network loss copmoses of both the kl div loss as well as the auxiliary loss
                 # aux_loss = clipped_value_loss(policy_values, rewards, old_values, self.value_clip)
@@ -1303,7 +1303,7 @@ class PPGOffPolicy(Policy):
 
                 # paper says it is important to train the value network extra during the auxiliary phase
                 # Calculate ppg error 'value_new', 'value_old', 'return_', 'weight'
-                values = self._model.forward(data['obs'], mode='compute_critic')['value']
+                values = self._model.forward(data['obs'], mode='compute_actor_critic')['value']
                 data_aux = ppo_value_data(values, data['value'], data['return_'], data['weight'])
 
                 value_loss = ppo_value_error(data_aux, self._clip_ratio)

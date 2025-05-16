@@ -6,27 +6,27 @@ cartpole_sac_config = dict(
     env=dict(
         collector_env_num=1,
         evaluator_env_num=1,
-        n_evaluator_episode=5,
+        n_evaluator_episode=1,
         stop_value=195,
     ),
     policy=dict(
         cuda=True,
         random_collect_size=0,
-        algorithm = 'sac',
+        algorithm='sac',
         load_path='models/wargame_sac_seed0/ckpt/ckpt_best.pth.tar',
         multi_agent=False,
         model=dict(
-            obs_shape=11,
-            action_shape=8,
+            obs_shape=170,
+            action_shape=7,
             twin_critic=True,
-            actor_head_hidden_size=64,
-            critic_head_hidden_size=64,
+            actor_head_hidden_size=128,
+            critic_head_hidden_size=128,
         ),
         learn=dict(
-            update_per_collect=2,
-            batch_size=64,
+            update_per_collect=5,
+            batch_size=128,
             learning_rate_q=5e-3,
-            learning_rate_policy=5e-3,
+            learning_rate_policy=1e-4,
             learning_rate_alpha=3e-4,
             ignore_done=False,
             target_theta=0.01,
@@ -35,13 +35,13 @@ cartpole_sac_config = dict(
             auto_alpha=False,
         ),
         collect=dict(
-            env_num=8,
-            n_sample=800*5,
+            env_num=1,
+            n_sample=1024,
             unroll_len=1,
         ),
         command=dict(),
         eval=dict(
-            evaluator=dict(eval_freq=10, ),
+            evaluator=dict(eval_freq=5, ),
             env_num=5,
         ),
         other=dict(
@@ -49,8 +49,8 @@ cartpole_sac_config = dict(
                 type='exp',
                 start=0.95,
                 end=0.1,
-                decay=50000,
-            ), replay_buffer=dict(replay_buffer_size=100000, )
+                decay=100000,
+            ), replay_buffer=dict(replay_buffer_size=50240, )
         ),
     ),
 )
@@ -72,4 +72,5 @@ create_config = cartpole_sac_create_config
 if __name__ == "__main__":
     # or you can enter `ding -m serial -c cartpole_sac_config.py -s 0`
     from ding.entry import serial_pipeline
+
     serial_pipeline((main_config, create_config), seed=0)

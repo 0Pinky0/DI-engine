@@ -1,13 +1,13 @@
 from easydict import EasyDict
 
 cartpole_a2c_config = dict(
-    env_id = 0,
+    env_id=0,
     exp_name='cartpole_a2c_seed0',
     env=dict(
         collector_env_num=1,
         evaluator_env_num=1,
-        n_evaluator_episode=5,
-        stop_value=195,
+        n_evaluator_episode=1,
+        stop_value=2000,
     ),
     policy=dict(
         cuda=True,
@@ -22,7 +22,7 @@ cartpole_a2c_config = dict(
             actor_head_hidden_size=128,
         ),
         learn=dict(
-            epoch_per_collect=5,
+            epoch_per_collect=50,
             batch_size=800,
             learning_rate=0.0025,
             value_weight=0.05, #0.5
@@ -36,7 +36,7 @@ cartpole_a2c_config = dict(
             discount_factor=0.9,
             gae_lambda=0.95,
         ),
-        eval=dict(evaluator=dict(eval_freq=5, ), ),
+        eval=dict(evaluator=dict(eval_freq=3, ), ),
     ),
 )
 cartpole_a2c_config = EasyDict(cartpole_a2c_config)

@@ -392,6 +392,27 @@ def interaction_evaluator(
             logging.info(
                 'Evaluation: Train Iter({}) Eval Return({:.3f}) {}'.format(ctx.train_iter, episode_return, kwargs_str)
             )
+            # 将日志数据写入json保存reward
+            log_data = {
+                "type": "Evaluation",
+                "train_iter": ctx.train_iter,
+                "opt_return": float(np.sum(opt_reward)),
+                "episode_return": float(episode_return),  # 确保浮点数格式
+
+                "additional_params": kwargs_str  # 假设kwargs_str可以直接作为字符串存入，或根据实际情况处理
+            }
+            import json
+            os.makedirs('logs/evaluate_json', exist_ok=True)
+
+            # 檢查文件是否存在，如果不存在則創建
+            file_path = f'logs/evaluate_json/{cfg.policy.algorithm}_log_data_{cfg.time}.json'
+            if not os.path.exists(file_path):
+                with open(file_path, 'w') as json_file:
+                    json_file.write("")  # 創建一個空文件
+
+            # 寫入日誌數據
+            with open(file_path, 'a') as json_file:
+                json_file.write(json.dumps(log_data, ensure_ascii=False) + ",\n")
         else:
             raise TypeError("not supported ctx type: {}".format(type(ctx)))
         ctx.last_eval_iter = ctx.train_iter

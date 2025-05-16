@@ -3,7 +3,9 @@ from .cartpole_acer_config import cartpole_acer_config, cartpole_acer_create_con
 from .cartpole_c51_config import cartpole_c51_config, cartpole_c51_create_config
 from .cartpole_dqfd_config import cartpole_dqfd_config, cartpole_dqfd_create_config
 from .cartpole_dqn_config import cartpole_dqn_config, cartpole_dqn_create_config
+from .cartpole_dqn_config_2 import cartpole_dqn_her_config, cartpole_dqn_her_create_config
 from .cartpole_dqn_gail_config import cartpole_dqn_gail_config, cartpole_dqn_gail_create_config
+# from .cartpole_dqn_her_config import cartpole_dqn_her_config, cartpole_dqn_her_create_config
 from .cartpole_gcl_config import cartpole_gcl_ppo_onpolicy_config, cartpole_gcl_ppo_onpolicy_create_config
 from .cartpole_impala_config import cartpole_impala_config, cartpole_impala_create_config
 from .cartpole_iqn_config import cartpole_iqn_config, cartpole_iqn_create_config
@@ -21,3 +23,4 @@ from .cartpole_trex_offppo_config import cartpole_trex_offppo_config, cartpole_t
 from .cartpole_trex_onppo_config import cartpole_trex_ppo_onpolicy_config, cartpole_trex_ppo_onpolicy_create_config
 from .cartpole_mdqn_config import cartpole_mdqn_config, cartpole_mdqn_create_config
 # from .cartpole_ppo_default_loader import cartpole_ppo_default_loader
+from .lunarlander_impala_config import main_config, create_config

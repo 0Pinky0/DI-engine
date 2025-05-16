@@ -137,7 +137,7 @@ class DQN(nn.Module):
                 x1 = self.encoder(x1)
                 x1 = self.head(x1)
                 logit = x1['logit']
-                logit[action_mask == 0.0] = -99999999
+                logit[action_mask == 0.0] = -1
                 # print('logit:', logit)
                 return{'logit': logit, "action_mask": action_mask}
         elif isinstance(x, torch.Tensor):
@@ -504,7 +504,7 @@ class QRDQN(nn.Module):
                 tau = x['tau']
                 logit = x['logit']
                 # distribution = x['distribution']
-                logit[action_mask == 0.0] = -99999999
+                logit[action_mask == 0.0] = -1
                 # # print('logit:', logit)
                 # return{'logit': logit, "distribution": distribution, "action_mask": action_mask}
                 return{'logit': logit, 'q': q, 'tau': tau, "action_mask": action_mask}
@@ -638,7 +638,7 @@ class IQN(nn.Module):
                 # tau = x['tau']
                 logit = x['logit']
                 # distribution = x['distribution']
-                logit[action_mask == 0.0] = -99999999
+                logit[action_mask == 0.0] = -1
                 # # print('logit:', logit)
                 # return{'logit': logit,  "action_mask": action_mask}
                 return{'logit': logit, 'q': q, 'quantiles': quantiles, "action_mask": action_mask}
@@ -776,7 +776,7 @@ class FQF(nn.Module):
                 x1 = self.encoder(x1)
                 x1 = self.head(x1)
                 logit = x1['logit']
-                logit[action_mask == 0.0] = -99999999
+                logit[action_mask == 0.0] = -1
             # print('logit:', logit)
             return {'logit': logit, 'q':x1['q'],'quantiles':x1['quantiles'],'quantiles_hats':x1['quantiles_hats'],
                     "q_tau_i":x1["q_tau_i"],'entropies':x1['entropies'],"action_mask": action_mask}
@@ -908,7 +908,7 @@ class RainbowDQN(nn.Module):
                 # tau = x['tau']
                 logit = x['logit']
                 # distribution = x['distribution']
-                logit[action_mask == 0.0] = -99999999
+                logit[action_mask == 0.0] = -1
                 # # print('logit:', logit)
                 # return{'logit': logit,  "action_mask": action_mask}
                 return{'logit': logit,  'distribution': distribution, "action_mask": action_mask}

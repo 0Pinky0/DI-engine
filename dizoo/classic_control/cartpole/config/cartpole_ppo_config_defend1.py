@@ -16,10 +16,10 @@ cartpole_ppo_config = dict(
         cuda=True,
         algorithm = 'ppo_10vs3',
         action_space='discrete',
-        load_path = 'models/wargame_ppo_seed0_test/ckpt/eval.pth.tar',
+        load_path = 'models/wargame_ppo_seed0_test/ckpt/iteration_1190.pth.tar',
         model=dict(
-            obs_shape=15, #1376
-            action_shape=6,#1657  #26   1657 469
+            obs_shape=315, #1376
+            action_shape=7,#1657  #26   1657 469
             action_space='discrete',
             encoder_hidden_size_list=[64, 128, 128],
             critic_head_hidden_size=128,
@@ -27,20 +27,20 @@ cartpole_ppo_config = dict(
         ),
         learn=dict(
             epoch_per_collect=5,
-            batch_size=1000,
-            learning_rate=0.0025,
-            value_weight=0.01, #0.5
+            batch_size=2000,
+            learning_rate=0.001,
+            value_weight=0.1, #0.5
             entropy_weight=0.01,
             clip_ratio=0.1,
-            learner=dict(hook=dict(save_ckpt_after_iter=100)),
+            learner=dict(hook=dict(save_ckpt_after_iter=10)),
         ),
         collect=dict(
-            n_sample=1000 * 6,
+            n_sample=1000 * 8,
             unroll_len=1,
             discount_factor=0.9,
             gae_lambda=0.95,
         ),
-        eval=dict(evaluator=dict(eval_freq=100, ), ),
+        eval=dict(evaluator=dict(eval_freq=10, ), ),
     ),
 )
 cartpole_ppo_config = EasyDict(cartpole_ppo_config)

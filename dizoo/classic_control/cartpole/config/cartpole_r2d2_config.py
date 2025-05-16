@@ -3,7 +3,7 @@ from easydict import EasyDict
 collector_env_num = 1
 evaluator_env_num = 1
 cartpole_r2d2_config = dict(
-    env_id = 0,
+    env_id=0,
     exp_name='cartpole_r2d2_seed0',
     env=dict(
         collector_env_num=collector_env_num,
@@ -13,7 +13,7 @@ cartpole_r2d2_config = dict(
     ),
     policy=dict(
         cuda=True,
-        algorithm = 'r2d2',
+        algorithm='r2d2',
         priority=False,
         priority_IS_weight=False,
         model=dict(
@@ -34,8 +34,8 @@ cartpole_r2d2_config = dict(
             # samples, the length of each sample sequence is <burnin_step> + <unroll_len>,
             # which is 100 in our seeting, 32*100/400=8, so we set update_per_collect=8
             # in most environments
-            update_per_collect=5,
-            batch_size=64,
+            update_per_collect=20,
+            batch_size=128,
             learning_rate=0.0005,
             target_update_theta=0.001,
         ),
@@ -45,12 +45,12 @@ cartpole_r2d2_config = dict(
             # In R2D2 policy, for each collect_env, we want to collect data of length self._traj_len=INF
             # unless the episode enters the 'done' state.
             # In each collect phase, we collect a total of <n_sample> sequence samples.
-            n_sample=800*5,
+            n_sample=800 * 5,
             unroll_len=1,
             traj_len_inf=True,
             env_num=collector_env_num,
         ),
-        eval=dict(env_num=evaluator_env_num, evaluator=dict(eval_freq=30)),
+        eval=dict(env_num=evaluator_env_num, evaluator=dict(eval_freq=10)),
         other=dict(
             eps=dict(
                 type='exp',
@@ -77,4 +77,5 @@ create_config = cartpole_r2d2_create_config
 if __name__ == "__main__":
     # or you can enter `ding -m serial -c cartpole_r2d2_config.py -s 0`
     from ding.entry import serial_pipeline
+
     serial_pipeline((main_config, create_config), seed=0)

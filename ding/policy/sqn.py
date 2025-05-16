@@ -198,6 +198,8 @@ class SQNPolicy(Policy):
                 a_entropy += entropy / (num_s_env + 1e-6)
 
         self._optimizer_q.zero_grad()
+        a_total_q_loss = a_total_q_loss.float()
+        a_alpha_loss = a_alpha_loss.float()
         a_total_q_loss.backward()
         self._optimizer_q.step()
 
